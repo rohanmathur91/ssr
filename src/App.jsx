@@ -1,3 +1,11 @@
+import { List } from "./components";
+import "./style.css";
+
 export const App = () => {
-  return <h1>welcome back</h1>;
+  return (
+    <div>
+      <h1>welcome back 😎</h1>
+      <List />
+    </div>
+  );
 };
