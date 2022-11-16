@@ -1,18 +1,25 @@
-const React = require("react");
-const { renderToString } = require("react-dom/server");
-const express = require("express");
-const { App } = require("./src/App");
-const { getUsers } = require("./src/getUsers");
+import React from "react";
+import { renderToString } from "react-dom/server";
+import express from "express";
+import { App } from "./src/App";
+import { getUsers } from "./src/getUsers";
+import fs from "node:fs/promises";
+import path from "node:path";
+
 const app = express();
 
-app.get("/", (req, res) => {
-  getUsers()
-    .then(response => response.json())
-    .then(users => {
-      const html = renderToString(<App users={users} />);
+app.get("/", async (req, res) => {
+  const users = await getUsers();
 
-      res.send(html);
-    });
+  const index = await fs.readFile(
+    path.join(path.resolve("./public"), "index.html"),
+    { encoding: "utf-8" }
+  );
+
+  const html = renderToString(<App users={users} />);
+  const finalIndexHtml = index.replace("<!-- react-app -->", html);
+
+  res.send(finalIndexHtml);
 });
 
 app.listen(8080, () => {
