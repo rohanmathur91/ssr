@@ -8,15 +8,9 @@ module.exports = {
   module: {
     rules: [
       { test: /\.css$/i, use: [MiniCssExtractPlugin.loader, "css-loader"] },
-
       {
         test: /.(js|jsx)$/i,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
-          },
-        },
+        use: "babel-loader",
         exclude: /(node_modules)/,
       },
     ],
